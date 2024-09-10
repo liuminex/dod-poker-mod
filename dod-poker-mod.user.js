@@ -191,7 +191,9 @@ function findCardsArea(){
     return document.getElementById("cardsArea");
 }
 function findAllPlayers(){
-    return document.getElementsByClassName("txplh");
+    let x = document.getElementsByClassName("txplh");
+    // return ones that do not have style.display = 'none':
+    return Array.from(x).filter(y => y.style.display != 'none');
 }
 
 /* MOD BOX */
@@ -223,7 +225,7 @@ function createModBox() {
                 <button id='extra-btn-2' style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'>READ ALL</button>
             </div>
 
-            <div id='cardsArea' style='max-height: calc(100vh - 500px); font-size: 0.7em; overflow-y: auto;'></div>
+            <div id='cardsArea' style='border: solid 1px #676767; padding: 7px; margin: 5px; max-height: calc(100vh - 500px); font-size: 0.7em; overflow-y: auto;'></div>
 
             <div id='modBoxLog' style='border: solid 1px #676767; padding: 7px; margin: 5px; max-height: 100px; overflow-y: auto;'></div>
 
@@ -438,7 +440,7 @@ function dod_displayHand(){
     ca.innerHTML = `
             <p><span>Me: </span><span>${styleCards(myCards)}</span></p>
             <p><span>Community: </span><span>${styleCards(playedCards)}</span></p>
-            <p><span><abbr title='not folded opponents'>Active</abbr>: </span><span>${nonFoldedPlayers}</span></p>
+            <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}</span></p>
             <p><span><abbr title='win probability'>P[win]</abbr> = </span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
         `;
 }
