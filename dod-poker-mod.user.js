@@ -431,16 +431,30 @@ function styleCards(cards) {
 }
 function dod_displayHand(){
     const ca = findCardsArea();
-    const wind_prob = poker_estimateWinProbability(myCards, playedCards, nonFoldedPlayers);
-    const colors = prob_color(wind_prob*100);
-    if(nonFoldedPlayers<2){
-        ca.innerHTML = `no data`;
+    
+    let preflop="";
+
+    if(myCards[0] == undefined || myCards[0] == ''){
+        ca.innerHTML = `waiting for hole cards`;
         return;
     }
+
+    if(playedCards.length == 0){
+        nonFoldedPlayers = getNumberOfPlayers();
+        preflop = " (preflop)";
+    }
+    if(nonFoldedPlayers<2){
+        ca.innerHTML = `you are folded`;
+        return;
+    }
+
+    const wind_prob = poker_estimateWinProbability(myCards, playedCards, nonFoldedPlayers);
+    const colors = prob_color(wind_prob*100);
+    
     ca.innerHTML = `
             <p><span>Me: </span><span>${styleCards(myCards)}</span></p>
             <p><span>Community: </span><span>${styleCards(playedCards)}</span></p>
-            <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}</span></p>
+            <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}${preflop}</span></p>
             <p><span><abbr title='win probability'>P[win]</abbr> = </span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
         `;
 }
