@@ -190,6 +190,15 @@ function findCommunityCardsArea(){
 function findCardsArea(){
     return document.getElementById("cardsArea");
 }
+function findCallButton(){
+    return document.getElementById("txop_call");
+}
+function findCheckButton(){
+    return document.getElementById("txop_check");
+}
+
+
+
 function findAllPlayers(){
     let x = document.getElementsByClassName("txplh");
     // return ones that do not have style.display = 'none':
@@ -307,6 +316,29 @@ function readCommunityCards(delay=3000){
 
     }, delay);
 
+}
+
+function convertMoney(str) {
+    const value = parseInt(str.substring(0, str.length - 1));
+    const unit = str[str.length - 1];
+    if(unit == "K") return value*1000;
+    if(unit == "M") return value*1000000;
+    if(unit == "B") return value*1000000000;
+    return -1;
+}
+//convertMoney("67K");
+
+function getCurrentAction(){
+    const check = findCheckButton();
+    const call = findCallButton();
+    if(check.style.display!='none'){
+        return "check";
+    }
+    if(call.style.display!='none'){
+        let amt = call.children[1].innerText;
+        amt = convertMoney(amt);
+        return amt;
+    }
 }
 
 // folder detection does not work correctly yet
@@ -429,6 +461,11 @@ function styleCards(cards) {
 
     return formattedCards.join(" ");
 }
+
+function isMyTurn(){
+    return document.getElementById("txoppanel_buttons").style.display !== "none";
+}
+
 function dod_displayHand(){
     const ca = findCardsArea();
     
@@ -457,6 +494,19 @@ function dod_displayHand(){
             <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}${preflop}</span></p>
             <p><span><abbr title='win probability'>P[win]</abbr> = </span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
         `;
+    
+    const action = getCurrentAction();
+    if(action == "check"){
+        ca.innerHTML += "<p>action: check</p>"
+    }else{
+        ca.innerHTML += "<p>action: call "+action+"</p>"
+    }
+
+    if(isMyTurn()){
+        ca.innerHTML += "<p>my turn: yes</p>"
+    }else{
+        ca.innerHTML += "<p>my turn: no</p>"
+    }
 }
 function addCommunityCardsListener(){
     // add event listener to detect every time a card is played
