@@ -319,8 +319,13 @@ function readCommunityCards(delay=3000){
 }
 
 function convertMoney(str) {
-    const value = parseInt(str.substring(0, str.length - 1));
+    let value = parseInt(str.substring(0, str.length - 1));
     const unit = str[str.length - 1];
+    // if unit is a number:
+    if(!isNaN(unit)){
+        value = parseInt(str);
+        return value;
+    }
     if(unit == "K") return value*1000;
     if(unit == "M") return value*1000000;
     if(unit == "B") return value*1000000000;
@@ -462,10 +467,6 @@ function styleCards(cards) {
     return formattedCards.join(" ");
 }
 
-function isMyTurn(){
-    return document.getElementById("txoppanel_buttons").style.display !== "none";
-}
-
 function dod_displayHand(){
     const ca = findCardsArea();
     
@@ -502,7 +503,13 @@ function dod_displayHand(){
         ca.innerHTML += "<p>action: call "+action+"</p>"
     }
 
-    if(isMyTurn()){
+    let a=false,b=false;
+    a = findCheckButton();
+    if(a) a = a.style.display == 'none';
+    b = findCallButton();
+    if(b) b = b.style.display == 'none';
+
+    if(!a || !b){
         ca.innerHTML += "<p>my turn: yes</p>"
     }else{
         ca.innerHTML += "<p>my turn: no</p>"
