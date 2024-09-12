@@ -469,7 +469,7 @@ function styleCards(cards) {
 
 function dod_displayHand(){
     const ca = findCardsArea();
-    
+
     let preflop="";
 
     if(myCards[0] == undefined || myCards[0] == ''){
@@ -488,20 +488,13 @@ function dod_displayHand(){
 
     const wind_prob = poker_estimateWinProbability(myCards, playedCards, nonFoldedPlayers);
     const colors = prob_color(wind_prob*100);
-    
+
     ca.innerHTML = `
             <p><span>Me: </span><span>${styleCards(myCards)}</span></p>
             <p><span>Community: </span><span>${styleCards(playedCards)}</span></p>
             <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}${preflop}</span></p>
             <p><span><abbr title='win probability'>P[win]</abbr> = </span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
         `;
-    
-    const action = getCurrentAction();
-    if(action == "check"){
-        ca.innerHTML += "<p>action: check</p>"
-    }else{
-        ca.innerHTML += "<p>action: call "+action+"</p>"
-    }
 
     let a=false,b=false;
     a = findCheckButton();
@@ -511,6 +504,13 @@ function dod_displayHand(){
 
     if(!a || !b){
         ca.innerHTML += "<p>my turn: yes</p>"
+
+        const action = getCurrentAction();
+        if(action == "check"){
+            ca.innerHTML += "<p>action: check</p>"
+        }else{
+            ca.innerHTML += "<p>action: call "+action+"</p>"
+        }
     }else{
         ca.innerHTML += "<p>my turn: no</p>"
     }
