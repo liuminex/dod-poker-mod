@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Poker Mod
-// @version      0.1
+// @version      0.2
 // @description  Poker Mod Script for calculating win probabilities and play automatically
 // @author       Γουόλτερ
 // @match        https://www.dod.gr/*
@@ -208,6 +208,9 @@ function findAllPlayers(){
 /* MOD BOX */
 
 function createModBox() {
+
+    const btn_css = "border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;";
+
     const menuBtn = document.createElement("button");
     menuBtn.innerHTML = "Open Poker Mod Menu";
     menuBtn.id = "menuBtnOpen";
@@ -217,29 +220,18 @@ function createModBox() {
 
     const modBox = document.createElement("div");
     modBox.id = "modBox";
-    modBox.style.cssText = "position: fixed; top: 0; left: 0; width: 400px; height: 100vh; background-color: rgba(35,37,46,0.8); z-index: 9999; font-size: 15px; overflow-y: auto; font-weight: bold; box-sizing: border-box;";
+    modBox.style.cssText = "position: fixed; top: 0; left: 0; background-color: rgba(35,37,46,0); z-index: 9999; font-size: 15px; max-width: 100%; overflow-x: auto; font-weight: bold; box-sizing: border-box;";
     modBox.innerHTML = `
-        <div style='height: 30px; font-weight: bold; font-size: 17px; color: #dc0303; text-align:center; padding: 2px;'>Poker Mod Box <button id='closeModMenuBtn'
-        style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'
-        >close</button></div>
 
-        <hr style='margin: 0 2px; color: #dc0303;'>
+        <button id='closeModMenuBtn' style='${btn_css}'>close</button>
+        <button id='openPokerBtn' style='${btn_css}'>Open Poker</button>
+        <button id='extra-btn-0' style='${btn_css}; display: none;'>Reset</button>
+        <button id='extra-btn-1' style='${btn_css}; display: none;'>Read My Cards</button>
+        <button id='extra-btn-2' style='${btn_css}; display: none;'>READ ALL</button>
 
-        <div style='padding: 5px;'> <!-- tabs contents -->
-
-            <div id='mod-extras' style='padding: 7px; margin: 5px; border: solid 1px #676767; max-height: 200px; overflow-y: auto;'>
-                <button id='openPokerBtn' style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'>Open Poker</button>
-                <button id='extra-btn-0' style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'>Reset</button>
-                <button id='extra-btn-1' style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'>Read My Cards</button>
-                <button id='extra-btn-2' style='border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;'>READ ALL</button>
-            </div>
-
-            <div id='cardsArea' style='border: solid 1px #676767; padding: 7px; margin: 5px; max-height: calc(100vh - 500px); font-size: 0.7em; overflow-y: auto;'></div>
-
-            <div id='modBoxLog' style='border: solid 1px #676767; padding: 7px; margin: 5px; max-height: 100px; overflow-y: auto;'></div>
-
-        </div>
-        `;
+        <div id='cardsArea' style='font-size: 0.7em; position: fixed; bottom: 0px; left: 0px; width: 300px; height: 150px; padding: 7px; max-height: 100px; overflow-y: auto;'></div>
+        <div id='modBoxLog' style='display: none; position: fixed; bottom: 0px; left: 0px; width: 200px; height: 150px; padding: 7px; max-height: 100px; overflow-y: auto;'></div>
+    `;
     document.body.appendChild(modBox);
 
     document.getElementById("closeModMenuBtn").onclick = closeModMenu;
@@ -490,13 +482,13 @@ function dod_displayHand(){
     const colors = prob_color(wind_prob*100);
 
     ca.innerHTML = `
-            <p><span>Me: </span><span>${styleCards(myCards)}</span></p>
+            <!--<p><span>Me: </span><span>${styleCards(myCards)}</span></p>
             <p><span>Community: </span><span>${styleCards(playedCards)}</span></p>
-            <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}${preflop}</span></p>
-            <p><span><abbr title='win probability'>P[win]</abbr> = </span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
+            <p><span><abbr title='not folded players (including me)'>Active</abbr>: </span><span>${nonFoldedPlayers}${preflop}</span></p>-->
+            <p><span><abbr title='win probability'></span><span style='color: ${colors}; font-size: 5em;'>${(wind_prob*100).toFixed(0)}%</span></p>
         `;
 
-    let a=false,b=false;
+    /*let a=false,b=false;
     a = findCheckButton();
     if(a) a = a.style.display == 'none';
     b = findCallButton();
@@ -513,7 +505,7 @@ function dod_displayHand(){
         }
     }else{
         ca.innerHTML += "<p>my turn: no</p>"
-    }
+    }*/
 }
 function addCommunityCardsListener(){
     // add event listener to detect every time a card is played
