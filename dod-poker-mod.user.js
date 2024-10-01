@@ -229,7 +229,7 @@ function createModBox() {
         <button id='extra-btn-1' style='${btn_css}; display: none;'>Read My Cards</button>
         <button id='extra-btn-2' style='${btn_css}; display: none;'>READ ALL</button>
 
-        <div id='cardsArea' style='font-size: 0.7em; position: fixed; bottom: 0px; left: 0px; width: 300px; height: 150px; padding: 7px; max-height: 100px; overflow-y: auto;'></div>
+        <div id='cardsArea' style='font-size: 0.7em; position: fixed; bottom: 0px; left: 0px; padding: 7px; max-height: 100px; overflow-y: auto;'></div>
         <div id='modBoxLog' style='display: none; position: fixed; bottom: 0px; left: 0px; width: 200px; height: 150px; padding: 7px; max-height: 100px; overflow-y: auto;'></div>
     `;
     document.body.appendChild(modBox);
