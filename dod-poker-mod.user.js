@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Poker Mod
-// @version      0.2
+// @version      1.0
 // @description  Poker Mod Script for calculating win probabilities and play automatically
 // @author       Γουόλτερ
 // @match        https://www.dod.gr/*
@@ -209,7 +209,7 @@ function findAllPlayers(){
 
 function createModBox() {
 
-    const btn_css = "border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;";
+    const btn_css = "font-size: 0.85em; border: solid 1px black; padding: 3px; margin: 2px; background: rgb(13,43,85); background: linear-gradient(180deg, rgba(13,43,85,1) 0%, rgba(26,81,161,1) 35%, rgba(39,123,245,1) 100%); font-weight: bold; color: #f5f5f5; cursor: pointer;";
 
     const menuBtn = document.createElement("button");
     menuBtn.innerHTML = "Open Poker Mod Menu";
@@ -223,8 +223,8 @@ function createModBox() {
     modBox.style.cssText = "position: fixed; top: 0; left: 0; background-color: rgba(35,37,46,0); z-index: 9999; font-size: 15px; max-width: 100%; overflow-x: auto; font-weight: bold; box-sizing: border-box;";
     modBox.innerHTML = `
 
-        <button id='closeModMenuBtn' style='${btn_css}'>close</button>
-        <button id='openPokerBtn' style='${btn_css}'>Open Poker</button>
+        <button id='closeModMenuBtn' style='${btn_css}; display: none;'>close</button>
+        <button id='openPokerBtn' style='${btn_css}; position: fixed; top: 0px; left: 0px;'>Open Poker</button>
         <button id='extra-btn-0' style='${btn_css}; display: none;'>Reset</button>
         <button id='extra-btn-1' style='${btn_css}; display: none;'>Read My Cards</button>
         <button id='extra-btn-2' style='${btn_css}; display: none;'>READ ALL</button>
@@ -240,6 +240,11 @@ function createModBox() {
     document.getElementById("extra-btn-0").onclick = function(){ poker_resetAll(); };
     document.getElementById("extra-btn-1").onclick = function(){ findMyCurrentCards(); };
     document.getElementById("extra-btn-2").onclick = function(){ readAll(); };
+
+    /// rotate 90 degrees openPokerBtn:
+    document.getElementById("openPokerBtn").style.transform = "rotate(270deg)";
+    // and now move to left and bottom:
+    document.getElementById("openPokerBtn").style.transform += "translate(-34%, -125%)";
 }
 function log(str) {
     findModBoxLog().innerHTML += "<p class='logtry'>" + str + "</p>";
@@ -541,7 +546,6 @@ function startHand(){ // resets all
 
 
 createModBox();
-//addCommunityCardsListener();
 
 // every 2 seconds call readAll
 setInterval(readAll, 1500);
